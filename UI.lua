@@ -190,7 +190,7 @@ function library.new(library_title, cfg_location)
         return menu.open
     end
     function menu.SetOpen(State)
-        ScreenGui.Enabled = state
+        ScreenGui.Enabled = State
     end
 
     uis.InputBegan:Connect(function(key)
@@ -257,8 +257,6 @@ function library.new(library_title, cfg_location)
         Position = UDim2.new(0, 102, 0, 42),
         Size = UDim2.new(0, 586, 0, 446),
     }, ImageLabel)
-
-end
 
     local is_first_tab = true
     local selected_tab
