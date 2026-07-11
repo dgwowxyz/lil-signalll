@@ -51,7 +51,7 @@ local function getFont()
     return Enum.Font.SourceSans
 end
 
-spawn(LoadProggyClean)
+LoadProggyClean()
 
 local TweenService = game:GetService("TweenService")
 function library:tween(...) TweenService:Create(...):Play() end
