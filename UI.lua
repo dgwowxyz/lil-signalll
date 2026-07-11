@@ -57,6 +57,7 @@ local TweenService = game:GetService("TweenService")
 function library:tween(...) TweenService:Create(...):Play() end
 
 local uis = game:GetService("UserInputService")
+local guiService = game:GetService("GuiService")
 
 function library:create(Object, Properties, Parent)
     local Obj = Instance.new(Object)
@@ -244,7 +245,8 @@ function library.new(library_title, cfg_location)
     }, ScreenGui)
 
     rs.RenderStepped:Connect(function()
-        Cursor.Position = UDim2.new(0, mouse.X, 0, mouse.Y + 36)
+        local inset = guiService:GetGuiInset()
+        Cursor.Position = UDim2.new(0, mouse.X + inset.X, 0, mouse.Y + inset.Y)
     end)
 
 	ScreenGui.Parent = game:GetService("CoreGui")
@@ -254,19 +256,21 @@ function library.new(library_title, cfg_location)
     end
     function menu.SetOpen(State)
         ScreenGui.Enabled = State
+        menu.open = State
+        if State then
+            uis.MouseIconEnabled = false
+            uis.MouseBehavior = Enum.MouseBehavior.Default
+        else
+            uis.MouseIconEnabled = true
+        end
     end
+
+    menu.SetOpen(true)
 
     uis.InputBegan:Connect(function(key)
         if key.KeyCode ~= Enum.KeyCode.Insert then return end
-
-		ScreenGui.Enabled = not ScreenGui.Enabled
-        menu.open = ScreenGui.Enabled
-
-        while ScreenGui.Enabled do
-            uis.MouseIconEnabled = true
-            rs.RenderStepped:Wait()
-        end
-	end)
+        menu.SetOpen(not menu.open)
+    end)
 
     local ImageLabel = library:create("ImageButton", {
         Name = "Main",
