@@ -4,19 +4,30 @@ local library = {}
 local _http = game:GetService("HttpService")
 local ProggyCleanFont
 
+local FONT_DIR = "tompearl.xyz/fonts"
 local function LoadProggyClean()
+    if isfolder then
+        if not isfolder("tompearl.xyz") and makefolder then
+            makefolder("tompearl.xyz")
+        end
+        if not isfolder(FONT_DIR) and makefolder then
+            makefolder(FONT_DIR)
+        end
+    end
     local okDL, data = pcall(function() return _http:GetAsync("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/ProggyClean.ttf") end)
     if not okDL or not data or data == "" then return end
-    local okWrite = pcall(writefile, "ProggyClean.ttf", data)
+    local okWrite = pcall(writefile, FONT_DIR .. "/ProggyClean.ttf", data)
     if not okWrite then return end
     local okConfig = pcall(function()
-        writefile("ProggyClean.ttf.json", _http:JSONEncode({
+        writefile(FONT_DIR .. "/ProggyClean.ttf.json", _http:JSONEncode({
             name = "ProggyClean",
-            faces = { { name = "Regular", weight = 400, style = "normal", assetId = getcustomasset("ProggyClean.ttf") } }
+            faces = { { name = "Regular", weight = 400, style = "normal", assetId = getcustomasset(FONT_DIR .. "/ProggyClean.ttf") } }
         }))
     end)
     if not okConfig then return end
-    local okLoad, font = pcall(Font.new, getcustomasset("ProggyClean.ttf.json"), Enum.FontWeight.Regular)
+    local okLoad, font = pcall(function()
+        return Font.new(getcustomasset(FONT_DIR .. "/ProggyClean.ttf.json"), Enum.FontWeight.Regular)
+    end)
     if okLoad and font then
         ProggyCleanFont = font
     end
@@ -55,7 +66,42 @@ function library:console(func)
     func(("\n"):rep(57))
 end
 
-library.signal = loadstring(game:HttpGet("https://raw.githubusercontent.com/dgwowxyz/lil-signalll/refs/heads/main/Signal.lua"))()
+local signalSource, signalErr = pcall(function()
+    return game:HttpGet("https://raw.githubusercontent.com/dgwowxyz/lil-signalll/refs/heads/main/Signal.lua")
+end)
+if signalSource then
+    local ok, mod = pcall(loadstring, signalSource)
+    if ok and mod then
+        library.signal = mod
+    end
+end
+if not library.signal then
+    local Signal = {}
+    Signal.__index = Signal
+    function Signal.new()
+        return setmetatable({ _bindable = Instance.new("BindableEvent"), _argMap = {} }, Signal)
+    end
+    function Signal:Fire(...)
+        local key = game:GetService("HttpService"):GenerateGUID(false)
+        self._argMap[key] = {...}
+        self._bindable:Fire(key)
+    end
+    function Signal:Connect(handler)
+        return self._bindable.Event:Connect(function(key)
+            local args = self._argMap[key]
+            if args then handler(table.unpack(args)) end
+        end)
+    end
+    function Signal:Wait()
+        local key = self._bindable.Event:Wait()
+        local args = self._argMap[key]
+        if args then return table.unpack(args) end
+    end
+    function Signal:Destroy()
+        self._bindable:Destroy()
+    end
+    library.signal = Signal
+end
 
 local local_player = game:GetService("Players").LocalPlayer
 local mouse = local_player:GetMouse()
@@ -168,7 +214,7 @@ function library.new(library_title, cfg_location)
         IgnoreGuiInset = true,
     })
 
-	if syn then
+	if syn and syn.protect_gui then
 		syn.protect_gui(ScreenGui)
 	end
 
