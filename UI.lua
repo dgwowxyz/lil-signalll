@@ -1,19 +1,5 @@
 local library = {}
 
-local theme = {
-    bg = Color3.fromRGB(15, 15, 17),
-    surface = Color3.fromRGB(22, 22, 26),
-    container = Color3.fromRGB(10, 10, 12),
-    border = Color3.fromRGB(38, 38, 44),
-    borderLight = Color3.fromRGB(48, 48, 54),
-    accent = Color3.fromRGB(88, 101, 242),
-    text = Color3.fromRGB(180, 182, 187),
-    textBright = Color3.fromRGB(255, 255, 255),
-    textMuted = Color3.fromRGB(114, 116, 122),
-    textSub = Color3.fromRGB(200, 202, 206),
-    dark = theme.dark,
-}
-
 --// fonts
 local ProggyCleanFont
 
@@ -289,8 +275,8 @@ function library.new(library_title, cfg_location)
     local ImageLabel = library:create("ImageButton", {
         Name = "Main",
         AnchorPoint = Vector2.new(0.5, 0.5),
-        BackgroundColor3 = theme.bg,
-        BorderColor3 = theme.accent,
+        BackgroundColor3 = Color3.fromRGB(15, 15, 15),
+        BorderColor3 = Color3.fromRGB(78, 93, 234),
         Position = UDim2.new(0.5, 0, 0.5, 0),
         Size = UDim2.new(0, 700, 0, 500),
         Image = "http://www.roblox.com/asset/?id=7300333488",
@@ -313,7 +299,7 @@ function library.new(library_title, cfg_location)
         Size = UDim2.new(1, -22, 0, 30),
         FontFace = getFont(),
         Text = library_title,
-        TextColor3 = theme.textBright,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
         TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Left,
         RichText = true,
@@ -360,7 +346,7 @@ function library.new(library_title, cfg_location)
             Position = UDim2.new(0.5, 0, 0.5, 0),
             Size = UDim2.new(0, 32, 0, 32),
             Image = tab_image,
-            ImageColor3 = theme.textMuted,
+            ImageColor3 = Color3.fromRGB(100, 100, 100),
         }, TabButton)
 
         local TabSections = Instance.new("Frame")
@@ -397,7 +383,7 @@ function library.new(library_title, cfg_location)
             is_first_tab = false
             selected_tab = TabButton
 
-            TabImage.ImageColor3 = theme.accent
+            TabImage.ImageColor3 = Color3.fromRGB(84, 101, 255)
             Tab.Visible = true
         end
 
@@ -407,24 +393,24 @@ function library.new(library_title, cfg_location)
             for _,TButtons in pairs (TabButtons:GetChildren()) do
                 if not TButtons:IsA("TextButton") then continue end
 
-                library:tween(TButtons.ImageLabel, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = theme.textMuted})
+                library:tween(TButtons.ImageLabel, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(100, 100, 100)})
             end
             for _,Tab in pairs (Tabs:GetChildren()) do
                 Tab.Visible = false
             end
             Tab.Visible = true
             selected_tab = TabButton
-            library:tween(TabImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = theme.accent})
+            library:tween(TabImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(84, 101, 255)})
         end)
         TabButton.MouseEnter:Connect(function()
             if selected_tab == TabButton then return end
 
-            library:tween(TabImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = theme.textBright})
+            library:tween(TabImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 255, 255)})
         end)
         TabButton.MouseLeave:Connect(function()
             if selected_tab == TabButton then return end
 
-            library:tween(TabImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = theme.textMuted})
+            library:tween(TabImage, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(100, 100, 100)})
         end)
 
         local is_first_section = true
@@ -443,7 +429,7 @@ function library.new(library_title, cfg_location)
                 Size = UDim2.new(1/num_sections, 0, 1, 0),
                 FontFace = getFont(),
                 Text = section_name,
-                TextColor3 = theme.textMuted,
+                TextColor3 = Color3.fromRGB(100, 100, 100),
                 TextSize = 12,
             }, TabSections)
 
@@ -456,17 +442,17 @@ function library.new(library_title, cfg_location)
             SectionButton.MouseEnter:Connect(function()
                 if selected_section == SectionButton then return end
 
-                library:tween(SectionButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                library:tween(SectionButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
             end)
             SectionButton.MouseLeave:Connect(function()
                 if selected_section == SectionButton then return end
 
-                library:tween(SectionButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textMuted})
+                library:tween(SectionButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(100, 100, 100)})
             end)
 
             local SectionDecoration = library:create("Frame", {
                 Name = "SectionDecoration",
-                BackgroundColor3 = Color3.fromRGB(18, 18, 22),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BorderSizePixel = 0,
                 Position = UDim2.new(0, 0, 0, 27),
                 Size = UDim2.new(1, 0, 0, 1),
@@ -474,7 +460,7 @@ function library.new(library_title, cfg_location)
             }, SectionButton)
 
             local UIGradient = library:create("UIGradient", {
-                Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(18, 18, 22)), ColorSequenceKeypoint.new(0.5, theme.accent), ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 18, 22))},
+                Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(32, 33, 38)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(81, 97, 243)), ColorSequenceKeypoint.new(1, Color3.fromRGB(32, 33, 38))},
             }, SectionDecoration)
 
             local SectionFrame = library:create("Frame", {
@@ -513,7 +499,7 @@ function library.new(library_title, cfg_location)
             SectionButton.MouseButton1Down:Connect(function()
                 for _,SectionButtons in pairs (TabSections:GetChildren()) do
                     if SectionButtons:IsA("UIListLayout") then continue end
-                    library:tween(SectionButtons, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textMuted})
+                    library:tween(SectionButtons, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(100, 100, 100)})
                     SectionButtons.SectionDecoration.Visible = false
                 end
                 for _,TabFrame in pairs (TabFrames:GetChildren()) do
@@ -524,7 +510,7 @@ function library.new(library_title, cfg_location)
 
                 selected_section = SectionButton
                 SectionFrame.Visible = true
-                library:tween(SectionButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.accent})
+                library:tween(SectionButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(84, 101, 255)})
                 SectionDecoration.Visible = true
             end)
 
@@ -532,7 +518,7 @@ function library.new(library_title, cfg_location)
                 is_first_section = false
                 selected_section = SectionButton
 
-                SectionButton.TextColor3 = theme.accent
+                SectionButton.TextColor3 = Color3.fromRGB(84, 101, 255)
 
                 SectionDecoration.Visible = true
                 SectionFrame.Visible = true
@@ -545,13 +531,13 @@ function library.new(library_title, cfg_location)
                 menu.values[tab.tab_num][section_name][sector_name] = {}
 
                 local Border = library:create("Frame", {
-                    BackgroundColor3 = theme.dark,
-                    BorderColor3 = theme.borderLight,
+                    BackgroundColor3 = Color3.fromRGB(5, 5, 5),
+                    BorderColor3 = Color3.fromRGB(30, 30, 30),
                     Size = UDim2.new(1, 0, 0, 20),
                 }, actual_side)
 
                 local Container = library:create("Frame", {
-                    BackgroundColor3 = theme.container,
+                    BackgroundColor3 = Color3.fromRGB(10, 10, 10),
                     BorderSizePixel = 0,
                     Position = UDim2.new(0, 1, 0, 1),
                     Size = UDim2.new(1, -2, 1, -2),
@@ -574,7 +560,7 @@ function library.new(library_title, cfg_location)
                     Size = UDim2.new(1, 0, 0, 15),
                     FontFace = getFont(),
                     Text = sector_name,
-                    TextColor3 = theme.textBright,
+                    TextColor3 = Color3.fromRGB(255, 255, 255),
                     TextSize = 12,
                 }, Border)
 
@@ -591,8 +577,8 @@ function library.new(library_title, cfg_location)
 
                     local Line = library:create("Frame", {
                         Name = "Line",
-                        BackgroundColor3 = theme.surface,
-                        BorderColor3 = theme.border,
+                        BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                        BorderColor3 = Color3.fromRGB(0, 0, 0),
                         Position = UDim2.new(0.5, 0, 0.5, 0),
                         AnchorPoint = Vector2.new(0.5, 0.5),
                         Size = UDim2.new(1, 0, 0, thickness),
@@ -648,8 +634,8 @@ function library.new(library_title, cfg_location)
 
                         local ToggleFrame = library:create("Frame", {
                             AnchorPoint = Vector2.new(0, 0.5),
-                            BackgroundColor3 = theme.borderLight,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0, 9, 0.5, 0),
                             Size = UDim2.new(0, 9, 0, 9),
                         }, ToggleButton)
@@ -660,7 +646,7 @@ function library.new(library_title, cfg_location)
                             Size = UDim2.new(0, 200, 0, 9),
                             FontFace = getFont(),
                             Text = text,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, ToggleButton)
@@ -671,12 +657,12 @@ function library.new(library_title, cfg_location)
                             menu.values[tab.tab_num][section_name][sector_name][flag] = value
 
                             if value.Toggle then
-                                library:tween(ToggleFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = theme.accent})
-                                library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                library:tween(ToggleFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(84, 101, 255)})
+                                library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                             else
-                                library:tween(ToggleFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = theme.borderLight})
+                                library:tween(ToggleFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(30, 30, 30)})
                                 if not mouse_in then
-                                    library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
                             end
 
@@ -687,12 +673,12 @@ function library.new(library_title, cfg_location)
                         ToggleButton.MouseEnter:Connect(function()
                             mouse_in = true
                             if value.Toggle then return end
-                            library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                            library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                         end)
                         ToggleButton.MouseLeave:Connect(function()
                             mouse_in = false
                             if value.Toggle then return end
-                            library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                            library:tween(ToggleText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                         end)
                         ToggleButton.MouseButton1Down:Connect(function()
                             element:set_value({Toggle = not value.Toggle})
@@ -718,15 +704,15 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(0, 56, 0, 20),
                                 FontFace = getFont(),
                                 Text = "[ NONE ]",
-                                TextColor3 = theme.text,
+                                TextColor3 = Color3.fromRGB(150, 150, 150),
                                 TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Right,
                             }, ToggleButton)
 
                             local KeybindFrame = library:create("Frame", {
                                 Name = "KeybindFrame",
-                                BackgroundColor3 = theme.container,
-                                BorderColor3 = theme.borderLight,
+                                BackgroundColor3 = Color3.fromRGB(10, 10, 10),
+                                BorderColor3 = Color3.fromRGB(30, 30, 30),
                                 Position = UDim2.new(1, 5, 0, 3),
                                 Size = UDim2.new(0, 55, 0, 75),
                                 Visible = false,
@@ -742,19 +728,19 @@ function library.new(library_title, cfg_location)
                             local keybind_in2 = false
                             Keybind.MouseEnter:Connect(function()
                                 keybind_in = true
-                                library:tween(Keybind, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                library:tween(Keybind, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                             end)
                             Keybind.MouseLeave:Connect(function()
                                 keybind_in = false
-                                library:tween(Keybind, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                library:tween(Keybind, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                             end)
                             KeybindFrame.MouseEnter:Connect(function()
                                 keybind_in2 = true
-                                library:tween(KeybindFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.accent})
+                                library:tween(KeybindFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(84, 101, 255)})
                             end)
                             KeybindFrame.MouseLeave:Connect(function()
                                 keybind_in2 = false
-                                library:tween(KeybindFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.borderLight})
+                                library:tween(KeybindFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(30, 30, 30)})
                             end)
                             uis.InputBegan:Connect(function(input)
 								if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 and not binding then
@@ -770,7 +756,7 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(1, 0, 0, 25),
                                 FontFace = getFont(),
                                 Text = "Always",
-                                TextColor3 = theme.accent,
+                                TextColor3 = Color3.fromRGB(84, 101, 255),
                                 TextSize = 12,
                                 ZIndex = 2,
                             }, KeybindFrame)
@@ -781,7 +767,7 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(1, 0, 0, 25),
                                 FontFace = getFont(),
                                 Text = "Hold",
-                                TextColor3 = theme.text,
+                                TextColor3 = Color3.fromRGB(150, 150, 150),
                                 TextSize = 12,
                                 ZIndex = 2,
                             }, KeybindFrame)
@@ -792,7 +778,7 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(1, 0, 0, 25),
                                 FontFace = getFont(),
                                 Text = "Toggle",
-                                TextColor3 = theme.text,
+                                TextColor3 = Color3.fromRGB(150, 150, 150),
                                 TextSize = 12,
                                 ZIndex = 2,
                             }, KeybindFrame)
@@ -801,12 +787,12 @@ function library.new(library_title, cfg_location)
 
                                 TypeButton.MouseEnter:Connect(function()
                                     if extra_value.Type ~= TypeButton.Text then
-                                        library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                        library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                                     end
                                 end)
                                 TypeButton.MouseLeave:Connect(function()
                                     if extra_value.Type ~= TypeButton.Text then
-                                        library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                        library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                     end
                                 end)
                                 TypeButton.MouseButton1Down:Connect(function()
@@ -823,9 +809,9 @@ function library.new(library_title, cfg_location)
 
                                     for _,TypeButton2 in next, KeybindFrame:GetChildren() do
                                         if TypeButton2:IsA("UIListLayout") then continue end
-                                        library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                        library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                     end
-                                    library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.accent})
+                                    library:tween(TypeButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(84, 101, 255)})
                                 end)
                             end
 
@@ -895,9 +881,9 @@ function library.new(library_title, cfg_location)
                                 for _,TypeButton2 in next, KeybindFrame:GetChildren() do
                                     if TypeButton2:IsA("UIListLayout") then continue end
                                     if TypeButton2.Name ~= extra_value.Type then
-                                        library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                        library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                     else
-                                        library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.accent})
+                                        library:tween(TypeButton2, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(84, 101, 255)})
                                     end
                                 end
 
@@ -932,7 +918,7 @@ function library.new(library_title, cfg_location)
                                 Name = "ColorButton",
                                 AnchorPoint = Vector2.new(1, 0.5),
                                 BackgroundColor3 = Color3.fromRGB(255, 28, 28),
-                                BorderColor3 = theme.border,
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 Position = UDim2.new(0, 265, 0.5, 0),
                                 Size = UDim2.new(0, 35, 0, 11),
                                 AutoButtonColor = false,
@@ -944,8 +930,8 @@ function library.new(library_title, cfg_location)
                             local ColorFrame = library:create("Frame", {
                                 Name = "ColorFrame",
                                 Parent = ColorButton,
-                                BackgroundColor3 = theme.container,
-                                BorderColor3 = theme.border,
+                                BackgroundColor3 = Color3.fromRGB(10, 10, 10),
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 Position = UDim2.new(1, 5, 0, 0),
                                 Size = UDim2.new(0, 200, 0, 170),
                                 Visible = false,
@@ -955,7 +941,7 @@ function library.new(library_title, cfg_location)
                             local ColorPicker = library:create("ImageButton", {
                                 Name = "ColorPicker",
                                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                                BorderColor3 = theme.border,
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 Position = UDim2.new(0, 40, 0, 10),
                                 Size = UDim2.new(0, 150, 0, 150),
                                 AutoButtonColor = false,
@@ -967,7 +953,7 @@ function library.new(library_title, cfg_location)
                             local ColorPick = library:create("Frame", {
                                 Name = "ColorPick",
                                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                                BorderColor3 = theme.border,
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 Size = UDim2.new(0, 1, 0, 1),
                                 ZIndex = 2,
                             }, ColorPicker)
@@ -975,7 +961,7 @@ function library.new(library_title, cfg_location)
                             local HuePicker = library:create("TextButton", {
                                 Name = "HuePicker",
                                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                                BorderColor3 = theme.border,
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 Position = UDim2.new(0, 10, 0, 10),
                                 Size = UDim2.new(0, 20, 0, 150),
                                 ZIndex = 2,
@@ -999,7 +985,7 @@ function library.new(library_title, cfg_location)
                             local HuePick = library:create("ImageButton", {
                                 Name = "HuePick",
                                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                                BorderColor3 = theme.border,
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 Size = UDim2.new(1, 0, 0, 1),
                                 ZIndex = 2,
                             }, HuePicker)
@@ -1011,11 +997,11 @@ function library.new(library_title, cfg_location)
                             end)
                             ColorFrame.MouseEnter:Connect(function()
                                 in_color = true
-                                library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.accent})
+                                library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(84, 101, 255)})
                             end)
                             ColorFrame.MouseLeave:Connect(function()
                                 in_color = false
-                                library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.border})
+                                library:tween(ColorFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(0, 0, 0)})
                             end)
                             ColorButton.MouseEnter:Connect(function()
                                 in_color2 = true
@@ -1039,7 +1025,7 @@ function library.new(library_title, cfg_location)
                                 local TransparencyPicker = library:create("ImageButton", {
                                     Name = "TransparencyPicker",
                                     BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                                    BorderColor3 = theme.border,
+                                    BorderColor3 = Color3.fromRGB(0, 0, 0),
                                     Position = UDim2.new(0, 10, 0, 170),
                                     Size = UDim2.new(0, 180, 0, 20),
                                     Image = "rbxassetid://3887014957",
@@ -1058,7 +1044,7 @@ function library.new(library_title, cfg_location)
                                 TransparencyPick = library:create("Frame", {
                                     Name = "TransparencyPick",
                                     BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                                    BorderColor3 = theme.border,
+                                    BorderColor3 = Color3.fromRGB(0, 0, 0),
                                     Size = UDim2.new(0, 1, 1, 0),
                                     ZIndex = 2,
                                 }, TransparencyPicker)
@@ -1212,8 +1198,8 @@ function library.new(library_title, cfg_location)
 
                         local DropdownButton = library:create("TextButton", {
                             Name = "DropdownButton",
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0, 9, 0, 20),
                             Size = UDim2.new(0, 260, 0, 20),
                             AutoButtonColor = false,
@@ -1227,7 +1213,7 @@ function library.new(library_title, cfg_location)
                             Size = UDim2.new(0, 250, 1, 0),
                             FontFace = getFont(),
                             Text = value.Dropdown,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, DropdownButton)
@@ -1246,7 +1232,7 @@ function library.new(library_title, cfg_location)
                             Size = UDim2.new(0, 200, 0, 9),
                             FontFace = getFont(),
                             Text = text,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, Dropdown)
@@ -1254,8 +1240,8 @@ function library.new(library_title, cfg_location)
                         local DropdownScroll = library:create("ScrollingFrame", {
                             Name = "DropdownScroll",
                             Active = true,
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0, 9, 0, 41),
                             Size = UDim2.new(0, 260, 0, 20),
                             CanvasSize = UDim2.new(0, 0, 0, 0),
@@ -1289,11 +1275,11 @@ function library.new(library_title, cfg_location)
                             dropdown_open = DropdownScroll.Visible
 
                             if not dropdown_open then
-                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
-                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                             else
-                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
-                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
+                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                             end
                         end)
                         Dropdown.MouseEnter:Connect(function()
@@ -1314,8 +1300,8 @@ function library.new(library_title, cfg_location)
                                     DropdownScroll.Visible = false
                                     DropdownScroll.CanvasPosition = Vector2.new(0,0)
 
-                                    library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
-                                    library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                    library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
                             end
                         end)
@@ -1335,8 +1321,8 @@ function library.new(library_title, cfg_location)
                         for _,v in next, data.options do
                             local Button = library:create("TextButton", {
                                 Name = v,
-                                BackgroundColor3 = theme.surface,
-                                BorderColor3 = theme.border,
+                                BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 BorderSizePixel = 0,
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
@@ -1353,7 +1339,7 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(0, 245, 1, 0),
                                 FontFace = getFont(),
                                 Text = v,
-                                TextColor3 = theme.text,
+                                TextColor3 = Color3.fromRGB(150, 150, 150),
                                 TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                                 ZIndex = 2,
@@ -1361,7 +1347,7 @@ function library.new(library_title, cfg_location)
 
                             local Decoration = library:create("Frame", {
                                 Name = "Decoration",
-                                BackgroundColor3 = theme.accent,
+                                BackgroundColor3 = Color3.fromRGB(84, 101, 255),
                                 BorderSizePixel = 0,
                                 Size = UDim2.new(0, 1, 1, 0),
                                 Visible = false,
@@ -1369,11 +1355,11 @@ function library.new(library_title, cfg_location)
                             }, Button)
 
                             Button.MouseEnter:Connect(function()
-                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                                 Decoration.Visible = true
                             end)
                             Button.MouseLeave:Connect(function()
-                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 Decoration.Visible = false
                             end)
                             Button.MouseButton1Down:Connect(function()
@@ -1381,8 +1367,8 @@ function library.new(library_title, cfg_location)
                                 DropdownButtonText.Text = v
                                 value.Dropdown = v
 
-                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
-                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
 
                                 do_callback()
                             end)
@@ -1418,8 +1404,8 @@ function library.new(library_title, cfg_location)
 
                         local DropdownButton = library:create("TextButton", {
                             Name = "DropdownButton",
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0, 9, 0, 20),
                             Size = UDim2.new(0, 260, 0, 20),
                             AutoButtonColor = false,
@@ -1433,7 +1419,7 @@ function library.new(library_title, cfg_location)
                             Size = UDim2.new(0, 250, 1, 0),
                             FontFace = getFont(),
                             Text = value.Dropdown,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, DropdownButton)
@@ -1452,7 +1438,7 @@ function library.new(library_title, cfg_location)
                             Size = UDim2.new(0, 200, 0, 9),
                             FontFace = getFont(),
                             Text = text,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, Dropdown)
@@ -1460,8 +1446,8 @@ function library.new(library_title, cfg_location)
                         local DropdownScroll = library:create("ScrollingFrame", {
                             Name = "DropdownScroll",
                             Active = true,
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0, 9, 0, 41),
                             Size = UDim2.new(0, 260, 0, 20),
                             CanvasSize = UDim2.new(0, 0, 0, 0),
@@ -1495,11 +1481,11 @@ function library.new(library_title, cfg_location)
                             dropdown_open = DropdownScroll.Visible
 
                             if not dropdown_open then
-                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
-                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                             else
-                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
-                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
+                                library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                             end
                         end)
                         Dropdown.MouseEnter:Connect(function()
@@ -1520,8 +1506,8 @@ function library.new(library_title, cfg_location)
                                     DropdownScroll.Visible = false
                                     DropdownScroll.CanvasPosition = Vector2.new(0,0)
 
-                                    library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
-                                    library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(DropdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                    library:tween(DropdownButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
                             end
                         end)
@@ -1568,10 +1554,10 @@ function library.new(library_title, cfg_location)
                                 local ButtonText = DropButton.ButtonText
                                 if table.find(value.Combo, ButtonText.Text) then
                                     DropButton.Decoration.Visible = true
-                                    ButtonText.TextColor3 = theme.textBright
+                                    ButtonText.TextColor3 = Color3.fromRGB(255, 255, 255)
                                 else
                                     DropButton.Decoration.Visible = false
-                                    ButtonText.TextColor3 = theme.text
+                                    ButtonText.TextColor3 = Color3.fromRGB(150, 150, 150)
                                 end
                             end
 
@@ -1584,8 +1570,8 @@ function library.new(library_title, cfg_location)
                         for _,v in next, data.options do
                             local Button = library:create("TextButton", {
                                 Name = v,
-                                BackgroundColor3 = theme.surface,
-                                BorderColor3 = theme.border,
+                                BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 BorderSizePixel = 0,
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
@@ -1602,7 +1588,7 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(0, 245, 1, 0),
                                 FontFace = getFont(),
                                 Text = v,
-                                TextColor3 = theme.text,
+                                TextColor3 = Color3.fromRGB(150, 150, 150),
                                 TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                                 ZIndex = 2,
@@ -1610,7 +1596,7 @@ function library.new(library_title, cfg_location)
 
                             local Decoration = library:create("Frame", {
                                 Name = "Decoration",
-                                BackgroundColor3 = theme.accent,
+                                BackgroundColor3 = Color3.fromRGB(84, 101, 255),
                                 BorderSizePixel = 0,
                                 Size = UDim2.new(0, 1, 1, 0),
                                 Visible = false,
@@ -1621,23 +1607,23 @@ function library.new(library_title, cfg_location)
                             Button.MouseEnter:Connect(function()
                                 mouse_in = true
                                 if not table.find(value.Combo, v) then
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textSub})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(200, 200, 200)})
                                 end
                             end)
                             Button.MouseLeave:Connect(function()
                                 mouse_in = false
                                 if not table.find(value.Combo, v) then
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
                             end)
                             Button.MouseButton1Down:Connect(function()
                                 if table.find(value.Combo, v) then
                                     table.remove(value.Combo, table.find(value.Combo, v))
                                     Decoration.Visible = false
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 else
                                     table.insert(value.Combo, v)
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                                     Decoration.Visible = true
                                 end
 
@@ -1664,26 +1650,26 @@ function library.new(library_title, cfg_location)
                         local Button = library:create("TextButton", {
                             Name = "Button",
                             AnchorPoint = Vector2.new(0.5, 0.5),
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0.5, 0, 0.5, 0),
                             Size = UDim2.new(0, 215, 0, 20),
                             AutoButtonColor = false,
                             FontFace = getFont(),
                             Text = text,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                         }, ButtonFrame)
 
                         Button.MouseEnter:Connect(function()
-                            library:tween(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                            library:tween(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                         end)
                         Button.MouseLeave:Connect(function()
-                            library:tween(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                            library:tween(Button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                         end)
                         Button.MouseButton1Down:Connect(function()
-                            Button.BorderColor3 = theme.accent
-                            library:tween(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.border})
+                            Button.BorderColor3 = Color3.fromRGB(84, 101, 255)
+                            library:tween(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(0, 0, 0)})
                             do_callback()
                         end)
                     elseif type == "TextBox" then
@@ -1713,23 +1699,23 @@ function library.new(library_title, cfg_location)
                         local TextBox = library:create("TextBox", {
                             Name = "Button",
                             AnchorPoint = Vector2.new(0.5, 0.5),
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0.5, 0, 0.5, 0),
                             Size = UDim2.new(0, 215, 0, 20),
                             FontFace = getFont(),
                             Text = text,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             PlaceholderText = text,
                             ClearTextOnFocus = false,
                         }, ButtonFrame)
 
                         TextBox.MouseEnter:Connect(function()
-                            library:tween(TextBox, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                            library:tween(TextBox, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
                         end)
                         TextBox.MouseLeave:Connect(function()
-                            library:tween(TextBox, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                            library:tween(TextBox, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                         end)
                         TextBox:GetPropertyChangedSignal("Text"):Connect(function()
                             if string.len(TextBox.Text) > 15 then
@@ -1742,11 +1728,11 @@ function library.new(library_title, cfg_location)
                         end)
                         uis.TextBoxFocused:Connect(function()
                             if uis:GetFocusedTextBox() == TextBox then
-                                library:tween(TextBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.accent})
+                                library:tween(TextBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(84, 101, 255)})
                             end
                         end)
                         uis.TextBoxFocusReleased:Connect(function()
-                            library:tween(TextBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.border})
+                            library:tween(TextBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(0, 0, 0)})
                         end)
 
 
@@ -1790,8 +1776,8 @@ function library.new(library_title, cfg_location)
                         local ScrollFrame = library:create("ScrollingFrame", {
                             Name = "ScrollFrame",
                             Active = true,
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0.5, 0, 0, 5),
                             Size = UDim2.new(0, 215, 0, scrollsize * 20),
                             BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
@@ -1799,13 +1785,13 @@ function library.new(library_title, cfg_location)
                             ScrollBarThickness = 2,
                             TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
                             AnchorPoint = Vector2.new(0.5, 0),
-                            ScrollBarImageColor3 = theme.accent,
+                            ScrollBarImageColor3 = Color3.fromRGB(84, 101, 255),
                         }, Scroll)
                         ScrollFrame.MouseEnter:Connect(function()
-                            library:tween(ScrollFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.borderLight})
+                            library:tween(ScrollFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(30, 30, 30)})
                         end)
                         ScrollFrame.MouseLeave:Connect(function()
-                            library:tween(ScrollFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = theme.border})
+                            library:tween(ScrollFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(0, 0, 0)})
                         end)
 
                         local UIListLayout = library:create("UIListLayout", {
@@ -1817,15 +1803,15 @@ function library.new(library_title, cfg_location)
                         for _,v in next, data.options do
                             local Button = library:create("TextButton", {
                                 Name = v,
-                                BackgroundColor3 = theme.surface,
-                                BorderColor3 = theme.border,
+                                BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 BorderSizePixel = 0,
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
                                 AutoButtonColor = false,
                                 FontFace = getFont(),
                                 Text = "",
-                                TextColor3 = theme.border,
+                                TextColor3 = Color3.fromRGB(0, 0, 0),
                                 TextSize = 12,
                             }, ScrollFrame)
 
@@ -1837,7 +1823,7 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(0, 210, 1, 0),
                                 FontFace = getFont(),
                                 Text = v,
-                                TextColor3 = theme.text,
+                                TextColor3 = Color3.fromRGB(150, 150, 150),
                                 TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                             }, Button)
@@ -1845,7 +1831,7 @@ function library.new(library_title, cfg_location)
                             local Decoration = library:create("Frame", {
                                 Name = "Decoration",
                                 Parent = Button,
-                                BackgroundColor3 = theme.accent,
+                                BackgroundColor3 = Color3.fromRGB(84, 101, 255),
                                 BorderSizePixel = 0,
                                 Size = UDim2.new(0, 1, 1, 0),
                                 Visible = false,
@@ -1855,26 +1841,26 @@ function library.new(library_title, cfg_location)
                             Button.MouseEnter:Connect(function()
                                 mouse_in = true
                                 if value.Scroll ~= v then
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textSub})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(200, 200, 200)})
                                 end
                             end)
                             Button.MouseLeave:Connect(function()
                                 mouse_in = false
                                 if value.Scroll ~= v then
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
                             end)
                             Button.MouseButton1Down:Connect(function()
                                 for _,Button2 in next, ScrollFrame:GetChildren() do
                                     if not Button2:IsA("TextButton") then continue end
                                     Button2.Decoration.Visible = false
-                                    library:tween(Button2.ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(Button2.ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
 
                                 menu.values[tab.tab_num][section_name][sector_name][flag] = value
 
                                 Decoration.Visible = true
-                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
 
                                 value.Scroll = v
 
@@ -1884,7 +1870,7 @@ function library.new(library_title, cfg_location)
                             if scroll_is_first then
                                 scroll_is_first = false
                                 Decoration.Visible = true
-                                ButtonText.TextColor3 = theme.textBright
+                                ButtonText.TextColor3 = Color3.fromRGB(255, 255, 255)
                             end
                         end
 
@@ -1895,15 +1881,15 @@ function library.new(library_title, cfg_location)
 
                             local Button = library:create("TextButton", {
                                 Name = v,
-                                BackgroundColor3 = theme.surface,
-                                BorderColor3 = theme.border,
+                                BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                                BorderColor3 = Color3.fromRGB(0, 0, 0),
                                 BorderSizePixel = 0,
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
                                 AutoButtonColor = false,
                                 FontFace = getFont(),
                                 Text = "",
-                                TextColor3 = theme.border,
+                                TextColor3 = Color3.fromRGB(0, 0, 0),
                                 TextSize = 12,
                             }, ScrollFrame)
 
@@ -1915,7 +1901,7 @@ function library.new(library_title, cfg_location)
                                 Size = UDim2.new(0, 210, 1, 0),
                                 FontFace = getFont(),
                                 Text = v,
-                                TextColor3 = theme.text,
+                                TextColor3 = Color3.fromRGB(150, 150, 150),
                                 TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                             }, Button)
@@ -1923,7 +1909,7 @@ function library.new(library_title, cfg_location)
                             local Decoration = library:create("Frame", {
                                 Name = "Decoration",
                                 Parent = Button,
-                                BackgroundColor3 = theme.accent,
+                                BackgroundColor3 = Color3.fromRGB(84, 101, 255),
                                 BorderSizePixel = 0,
                                 Size = UDim2.new(0, 1, 1, 0),
                                 Visible = false,
@@ -1933,26 +1919,26 @@ function library.new(library_title, cfg_location)
                             Button.MouseEnter:Connect(function()
                                 mouse_in = true
                                 if value.Scroll ~= v then
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textSub})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(200, 200, 200)})
                                 end
                             end)
                             Button.MouseLeave:Connect(function()
                                 mouse_in = false
                                 if value.Scroll ~= v then
-                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
                             end)
                             Button.MouseButton1Down:Connect(function()
                                 for _,Button2 in next, ScrollFrame:GetChildren() do
                                     if not Button2:IsA("TextButton") then continue end
                                     Button2.Decoration.Visible = false
-                                    library:tween(Button2.ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                    library:tween(Button2.ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                 end
 
                                 menu.values[tab.tab_num][section_name][sector_name][flag] = value
 
                                 Decoration.Visible = true
-                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                                library:tween(ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
 
                                 value.Scroll = v
 
@@ -1962,7 +1948,7 @@ function library.new(library_title, cfg_location)
                             if scroll_is_first then
                                 scroll_is_first = false
                                 Decoration.Visible = true
-                                ButtonText.TextColor3 = theme.textBright
+                                ButtonText.TextColor3 = Color3.fromRGB(255, 255, 255)
                             end
                         end
 
@@ -1972,10 +1958,10 @@ function library.new(library_title, cfg_location)
                             for _,Button2 in next, ScrollFrame:GetChildren() do
                                 if not Button2:IsA("TextButton") then continue end
                                 Button2.Decoration.Visible = false
-                                library:tween(Button2.ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                library:tween(Button2.ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                             end
                             ScrollFrame[value.Scroll].Decoration.Visible = true
-                            library:tween(ScrollFrame[value.Scroll].ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                            library:tween(ScrollFrame[value.Scroll].ButtonText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
 
                             if cb == nil or not cb then
                                 do_callback()
@@ -2015,15 +2001,15 @@ function library.new(library_title, cfg_location)
                             Size = UDim2.new(0, 200, 0, 9),
                             FontFace = getFont(),
                             Text = text,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, Slider)
 
                         local SliderButton = library:create("TextButton", {
                             Name = "SliderButton",
-                            BackgroundColor3 = theme.surface,
-                            BorderColor3 = theme.border,
+                            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+                            BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0, 9, 0, 20),
                             Size = UDim2.new(0, 260, 0, 10),
                             AutoButtonColor = false,
@@ -2039,7 +2025,7 @@ function library.new(library_title, cfg_location)
                         }, SliderButton)
 
                         local UIGradient = library:create("UIGradient", {
-                            Color = ColorSequence.new{ColorSequenceKeypoint.new(0, theme.accent), ColorSequenceKeypoint.new(1, Color3.fromRGB(54, 64, 185))},
+                            Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(79, 95, 239)), ColorSequenceKeypoint.new(1, Color3.fromRGB(56, 67, 163))},
                             Rotation = 90,
                         }, SliderFrame)
 
@@ -2050,7 +2036,7 @@ function library.new(library_title, cfg_location)
                             Size = UDim2.new(0, 200, 0, 9),
                             FontFace = getFont(),
                             Text = value.Slider,
-                            TextColor3 = theme.text,
+                            TextColor3 = Color3.fromRGB(150, 150, 150),
                             TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Right,
                         }, Slider)
@@ -2058,15 +2044,15 @@ function library.new(library_title, cfg_location)
                         local is_sliding = false
                         local mouse_in = false
                         Slider.MouseEnter:Connect(function()
-                            library:tween(SliderText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
-                            library:tween(SliderValue, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.textBright})
+                            library:tween(SliderText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
+                            library:tween(SliderValue, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(255, 255, 255)})
 
                             mouse_in = true
                         end)
                         Slider.MouseLeave:Connect(function()
                             if not is_sliding then
-                                library:tween(SliderText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
-                                library:tween(SliderValue, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                library:tween(SliderText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                library:tween(SliderValue, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                             end
 
                             mouse_in = false
@@ -2107,8 +2093,8 @@ function library.new(library_title, cfg_location)
                                     is_sliding = false
 
                                     if not mouse_in then
-                                        library:tween(SliderText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
-                                        library:tween(SliderValue, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = theme.text})
+                                        library:tween(SliderText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
+                                        library:tween(SliderValue, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = Color3.fromRGB(150, 150, 150)})
                                     end
 
                                     move_connection:Disconnect()
