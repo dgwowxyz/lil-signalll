@@ -1,5 +1,33 @@
 local library = {}
 
+--// fonts
+local _http = game:GetService("HttpService")
+local ProggyCleanFont
+
+local function LoadProggyClean()
+    local okDL, data = pcall(function() return _http:GetAsync("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/ProggyClean.ttf") end)
+    if not okDL or not data or data == "" then return end
+    local okWrite = pcall(writefile, "ProggyClean.ttf", data)
+    if not okWrite then return end
+    local okConfig = pcall(function()
+        writefile("ProggyClean.ttf.json", _http:JSONEncode({
+            name = "ProggyClean",
+            faces = { { name = "Regular", weight = 400, style = "normal", assetId = getcustomasset("ProggyClean.ttf") } }
+        }))
+    end)
+    if not okConfig then return end
+    local okLoad, font = pcall(Font.new, getcustomasset("ProggyClean.ttf.json"), Enum.FontWeight.Regular)
+    if okLoad and font then
+        ProggyCleanFont = font
+    end
+end
+
+local function getFont()
+    return ProggyCleanFont or Enum.Font.SourceSans
+end
+
+spawn(LoadProggyClean)
+
 local TweenService = game:GetService("TweenService")
 function library:tween(...) TweenService:Create(...):Play() end
 
@@ -202,10 +230,10 @@ function library.new(library_title, cfg_location)
         BackgroundTransparency = 1,
         Position = UDim2.new(0.5, 0, 0, 0),
         Size = UDim2.new(1, -22, 0, 30),
-        Font = Enum.Font.Ubuntu,
+        Font = getFont(),
         Text = library_title,
         TextColor3 = Color3.fromRGB(255, 255, 255),
-        TextSize = 16,
+        TextSize = 12,
         TextXAlignment = Enum.TextXAlignment.Left,
         RichText = true,
     }, ImageLabel)
@@ -334,10 +362,10 @@ end
                 Name = "SectionButton",
                 BackgroundTransparency = 1,
                 Size = UDim2.new(1/num_sections, 0, 1, 0),
-                Font = Enum.Font.Ubuntu,
+                Font = getFont(),
                 Text = section_name,
                 TextColor3 = Color3.fromRGB(100, 100, 100),
-                TextSize = 15,
+                TextSize = 12,
             }, TabSections)
 
             for _,SectionButtons in pairs (TabSections:GetChildren()) do
@@ -465,10 +493,10 @@ end
                     BackgroundTransparency = 1,
                     Position = UDim2.new(0.5, 0, 0, -8),
                     Size = UDim2.new(1, 0, 0, 15),
-                    Font = Enum.Font.Ubuntu,
+                    Font = getFont(),
                     Text = sector_name,
                     TextColor3 = Color3.fromRGB(255, 255, 255),
-                    TextSize = 14,
+                    TextSize = 12,
                 }, Border)
 
                 function sector.create_line(thickness)
@@ -551,10 +579,10 @@ end
                             BackgroundTransparency = 1,
                             Position = UDim2.new(0, 27, 0, 5),
                             Size = UDim2.new(0, 200, 0, 9),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = text,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, ToggleButton)
 
@@ -609,10 +637,10 @@ end
                                 BackgroundTransparency = 1,
                                 Position = UDim2.new(0, 265, 0, 0),
                                 Size = UDim2.new(0, 56, 0, 20),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = "[ NONE ]",
                                 TextColor3 = Color3.fromRGB(150, 150, 150),
-                                TextSize = 14,
+                                TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Right,
                             }, ToggleButton)
 
@@ -661,10 +689,10 @@ end
                                 Name = "Always",
                                 BackgroundTransparency = 1,
                                 Size = UDim2.new(1, 0, 0, 25),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = "Always",
                                 TextColor3 = Color3.fromRGB(84, 101, 255),
-                                TextSize = 14,
+                                TextSize = 12,
                                 ZIndex = 2,
                             }, KeybindFrame)
 
@@ -672,10 +700,10 @@ end
                                 Name = "Hold",
                                 BackgroundTransparency = 1,
                                 Size = UDim2.new(1, 0, 0, 25),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = "Hold",
                                 TextColor3 = Color3.fromRGB(150, 150, 150),
-                                TextSize = 14,
+                                TextSize = 12,
                                 ZIndex = 2,
                             }, KeybindFrame)
 
@@ -683,10 +711,10 @@ end
                                 Name = "Toggle",
                                 BackgroundTransparency = 1,
                                 Size = UDim2.new(1, 0, 0, 25),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = "Toggle",
                                 TextColor3 = Color3.fromRGB(150, 150, 150),
-                                TextSize = 14,
+                                TextSize = 12,
                                 ZIndex = 2,
                             }, KeybindFrame)
                             for _,TypeButton in next, KeybindFrame:GetChildren() do
@@ -729,12 +757,12 @@ end
 
                                     local new_value = input.KeyCode.Name ~= "Unknown" and input.KeyCode.Name or input.UserInputType.Name
                                     Keybind.Text = "[ "..new_value:upper().." ]"
-									Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3, 0, 20)
+									Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 12, getFont(), Vector2.new(700, 20)).X + 3, 0, 20)
 									extra_value.Key = new_value
 
 									if new_value == "Backspace" then
 										Keybind.Text = "[ NONE ]"
-										Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3, 0, 20)
+										Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 12, getFont(), Vector2.new(700, 20)).X + 3, 0, 20)
 										extra_value.Key = nil
 									end
 
@@ -771,7 +799,7 @@ end
 									wait()
 									is_binding = true
 									Keybind.Text = "[ ... ]"
-									Keybind.Size = UDim2.new(0, library:get_text_size("[ ... ]", 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3,0, 20)
+									Keybind.Size = UDim2.new(0, library:get_text_size("[ ... ]", 12, getFont(), Vector2.new(700, 20)).X + 3,0, 20)
 								end
 							end)
 
@@ -796,7 +824,7 @@ end
 
                                 local key = extra_value.Key ~= nil and extra_value.Key or "NONE"
                                 Keybind.Text = "[ "..key:upper().." ]"
-                                Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 14, Enum.Font.Ubuntu, Vector2.new(700, 20)).X + 3, 0, 20)
+                                Keybind.Size = UDim2.new(0, library:get_text_size(Keybind.Text, 12, getFont(), Vector2.new(700, 20)).X + 3, 0, 20)
 
                                 if cb == nil or not cb then
                                     key_callback(extra_value)
@@ -829,7 +857,7 @@ end
                                 Position = UDim2.new(0, 265, 0.5, 0),
                                 Size = UDim2.new(0, 35, 0, 11),
                                 AutoButtonColor = false,
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = "",
                                 TextXAlignment = Enum.TextXAlignment.Right,
                             }, ToggleButton)
@@ -1118,10 +1146,10 @@ end
                             BackgroundTransparency = 1,
                             Position = UDim2.new(0, 6, 0, 0),
                             Size = UDim2.new(0, 250, 1, 0),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = value.Dropdown,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, DropdownButton)
 
@@ -1137,10 +1165,10 @@ end
                             BackgroundTransparency = 1,
                             Position = UDim2.new(0, 9, 0, 6),
                             Size = UDim2.new(0, 200, 0, 9),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = text,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, Dropdown)
 
@@ -1234,7 +1262,7 @@ end
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
                                 AutoButtonColor = false,
-                                Font = Enum.Font.SourceSans,
+                                Font = getFont(),
                                 Text = "",
                                 ZIndex = 2,
                             }, DropdownScroll)
@@ -1244,10 +1272,10 @@ end
                                 BackgroundTransparency = 1,
                                 Position = UDim2.new(0, 8, 0, 0),
                                 Size = UDim2.new(0, 245, 1, 0),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = v,
                                 TextColor3 = Color3.fromRGB(150, 150, 150),
-                                TextSize = 14,
+                                TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                                 ZIndex = 2,
                             }, Button)
@@ -1324,10 +1352,10 @@ end
                             BackgroundTransparency = 1,
                             Position = UDim2.new(0, 6, 0, 0),
                             Size = UDim2.new(0, 250, 1, 0),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = value.Dropdown,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, DropdownButton)
 
@@ -1343,10 +1371,10 @@ end
                             BackgroundTransparency = 1,
                             Position = UDim2.new(0, 9, 0, 6),
                             Size = UDim2.new(0, 200, 0, 9),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = text,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, Dropdown)
 
@@ -1483,7 +1511,7 @@ end
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
                                 AutoButtonColor = false,
-                                Font = Enum.Font.SourceSans,
+                                Font = getFont(),
                                 Text = "",
                                 ZIndex = 2,
                             }, DropdownScroll)
@@ -1493,10 +1521,10 @@ end
                                 BackgroundTransparency = 1,
                                 Position = UDim2.new(0, 8, 0, 0),
                                 Size = UDim2.new(0, 245, 1, 0),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = v,
                                 TextColor3 = Color3.fromRGB(150, 150, 150),
-                                TextSize = 14,
+                                TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                                 ZIndex = 2,
                             }, Button)
@@ -1562,10 +1590,10 @@ end
                             Position = UDim2.new(0.5, 0, 0.5, 0),
                             Size = UDim2.new(0, 215, 0, 20),
                             AutoButtonColor = false,
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = text,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                         }, ButtonFrame)
 
                         Button.MouseEnter:Connect(function()
@@ -1610,10 +1638,10 @@ end
                             BorderColor3 = Color3.fromRGB(0, 0, 0),
                             Position = UDim2.new(0.5, 0, 0.5, 0),
                             Size = UDim2.new(0, 215, 0, 20),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = text,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             PlaceholderText = text,
                             ClearTextOnFocus = false,
                         }, ButtonFrame)
@@ -1633,12 +1661,12 @@ end
                                 do_callback()
                             end
                         end)
-                        uis.TextBoxFocused:connect(function()
+                        uis.TextBoxFocused:Connect(function()
                             if uis:GetFocusedTextBox() == TextBox then
                                 library:tween(TextBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(84, 101, 255)})
                             end
                         end)
-                        uis.TextBoxFocusReleased:connect(function()
+                        uis.TextBoxFocusReleased:Connect(function()
                             library:tween(TextBox, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BorderColor3 = Color3.fromRGB(0, 0, 0)})
                         end)
 
@@ -1716,10 +1744,10 @@ end
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
                                 AutoButtonColor = false,
-                                Font = Enum.Font.SourceSans,
+                                Font = getFont(),
                                 Text = "",
                                 TextColor3 = Color3.fromRGB(0, 0, 0),
-                                TextSize = 14,
+                                TextSize = 12,
                             }, ScrollFrame)
 
                             local ButtonText = library:create("TextLabel", {
@@ -1728,10 +1756,10 @@ end
                                 BackgroundTransparency = 1,
                                 Position = UDim2.new(0, 7, 0, 0),
                                 Size = UDim2.new(0, 210, 1, 0),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = v,
                                 TextColor3 = Color3.fromRGB(150, 150, 150),
-                                TextSize = 14,
+                                TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                             }, Button)
 
@@ -1794,10 +1822,10 @@ end
                                 Position = UDim2.new(0, 0, 0, 20),
                                 Size = UDim2.new(1, 0, 0, 20),
                                 AutoButtonColor = false,
-                                Font = Enum.Font.SourceSans,
+                                Font = getFont(),
                                 Text = "",
                                 TextColor3 = Color3.fromRGB(0, 0, 0),
-                                TextSize = 14,
+                                TextSize = 12,
                             }, ScrollFrame)
 
                             local ButtonText = library:create("TextLabel", {
@@ -1806,10 +1834,10 @@ end
                                 BackgroundTransparency = 1,
                                 Position = UDim2.new(0, 7, 0, 0),
                                 Size = UDim2.new(0, 210, 1, 0),
-                                Font = Enum.Font.Ubuntu,
+                                Font = getFont(),
                                 Text = v,
                                 TextColor3 = Color3.fromRGB(150, 150, 150),
-                                TextSize = 14,
+                                TextSize = 12,
                                 TextXAlignment = Enum.TextXAlignment.Left,
                             }, Button)
 
@@ -1906,10 +1934,10 @@ end
                             BackgroundTransparency = 1,
                             Position = UDim2.new(0, 9, 0, 6),
                             Size = UDim2.new(0, 200, 0, 9),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = text,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Left,
                         }, Slider)
 
@@ -1920,7 +1948,7 @@ end
                             Position = UDim2.new(0, 9, 0, 20),
                             Size = UDim2.new(0, 260, 0, 10),
                             AutoButtonColor = false,
-                            Font = Enum.Font.SourceSans,
+                            Font = getFont(),
                             Text = "",
                         }, Slider)
 
@@ -1941,10 +1969,10 @@ end
                             BackgroundTransparency = 1,
                             Position = UDim2.new(0, 69, 0, 6),
                             Size = UDim2.new(0, 200, 0, 9),
-                            Font = Enum.Font.Ubuntu,
+                            Font = getFont(),
                             Text = value.Slider,
                             TextColor3 = Color3.fromRGB(150, 150, 150),
-                            TextSize = 14,
+                            TextSize = 12,
                             TextXAlignment = Enum.TextXAlignment.Right,
                         }, Slider)
 
