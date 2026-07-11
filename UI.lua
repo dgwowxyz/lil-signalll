@@ -4,6 +4,13 @@ local library = {}
 local ProggyCleanFont
 
 local function LoadProggyClean()
+    -- Ensure directories exist
+    if isfolder and makefolder then
+        if not isfolder("tompearl.xyz") then pcall(makefolder, "tompearl.xyz") end
+        if not isfolder("tompearl.xyz/fonts") then pcall(makefolder, "tompearl.xyz/fonts") end
+    end
+
+    -- Download font
     local data
     pcall(function() data = game:HttpGet("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/ProggyClean.ttf") end)
     if not data or data == "" then
@@ -11,41 +18,39 @@ local function LoadProggyClean()
         pcall(function() data = h:GetAsync("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/ProggyClean.ttf") end)
     end
     if not data or data == "" then return end
-    if not pcall(writefile, "ProggyClean.ttf", data) then return end
 
-    local assetPath
-    pcall(function() assetPath = getcustomasset("ProggyClean.ttf") end)
-    if not assetPath then return end
+    -- Try both paths
+    local paths = {"ProggyClean.ttf", "tompearl.xyz/fonts/ProggyClean.ttf"}
+    for _, p in ipairs(paths) do
+        if not pcall(writefile, p, data) then continue end
+        if isfile and not isfile(p) then continue end
 
-    -- Try direct Font.new first (simplest)
-    local ok, font = pcall(Font.new, assetPath, Enum.FontWeight.Regular)
-    if ok and font then
-        ProggyCleanFont = font
-        return
-    end
+        local assetPath
+        pcall(function() assetPath = getcustomasset(p) end)
+        if not assetPath then continue end
 
-    -- Fallback: try without weight
-    local ok2, font2 = pcall(Font.new, assetPath)
-    if ok2 and font2 then
-        ProggyCleanFont = font2
-        return
-    end
+        -- Try Font.new with weight
+        local ok, font = pcall(Font.new, assetPath, Enum.FontWeight.Regular)
+        if ok and font then ProggyCleanFont = font; return end
 
-    -- Fallback: try JSON config approach
-    local h = game:GetService("HttpService")
-    local okCfg = pcall(function()
-        writefile("ProggyClean.ttf.json", h:JSONEncode({
-            name = "ProggyClean",
-            faces = { { name = "Regular", weight = 400, style = "normal", assetId = assetPath } }
-        }))
-    end)
-    if not okCfg then return end
-    local jsonPath
-    pcall(function() jsonPath = getcustomasset("ProggyClean.ttf.json") end)
-    if not jsonPath then return end
-    local ok3, font3 = pcall(Font.new, jsonPath)
-    if ok3 and font3 then
-        ProggyCleanFont = font3
+        -- Try without weight
+        local ok2, font2 = pcall(Font.new, assetPath)
+        if ok2 and font2 then ProggyCleanFont = font2; return end
+
+        -- Try JSON config
+        local h = game:GetService("HttpService")
+        local okCfg = pcall(function()
+            writefile(p .. ".json", h:JSONEncode({
+                name = "ProggyClean",
+                faces = { { name = "Regular", weight = 400, style = "normal", assetId = assetPath } }
+            }))
+        end)
+        if not okCfg then continue end
+        local jsonPath
+        pcall(function() jsonPath = getcustomasset(p .. ".json") end)
+        if not jsonPath then continue end
+        local ok3, font3 = pcall(Font.new, jsonPath)
+        if ok3 and font3 then ProggyCleanFont = font3; return end
     end
 end
 
