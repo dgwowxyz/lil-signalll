@@ -57,7 +57,7 @@ local TweenService = game:GetService("TweenService")
 function library:tween(...) TweenService:Create(...):Play() end
 
 local uis = game:GetService("UserInputService")
-local guiService = game:GetService("GuiService")
+
 
 function library:create(Object, Properties, Parent)
     local Obj = Instance.new(Object)
@@ -229,7 +229,7 @@ function library.new(library_title, cfg_location)
         ResetOnSpawn = false,
         ZIndexBehavior = Enum.ZIndexBehavior.Global,
         Name = "unknown",
-        IgnoreGuiInset = true,
+        IgnoreGuiInset = false,
     })
 
 	if syn and syn.protect_gui then
@@ -245,8 +245,7 @@ function library.new(library_title, cfg_location)
     }, ScreenGui)
 
     rs.RenderStepped:Connect(function()
-        local inset = guiService:GetGuiInset()
-        Cursor.Position = UDim2.new(0, mouse.X + inset.X, 0, mouse.Y + inset.Y)
+        Cursor.Position = UDim2.new(0, mouse.X, 0, mouse.Y)
     end)
 
 	ScreenGui.Parent = game:GetService("CoreGui")
@@ -259,6 +258,7 @@ function library.new(library_title, cfg_location)
         menu.open = State
         if State then
             uis.MouseIconEnabled = false
+            if mouse then pcall(function() mouse.Icon = "" end) end
             uis.MouseBehavior = Enum.MouseBehavior.Default
         else
             uis.MouseIconEnabled = true
