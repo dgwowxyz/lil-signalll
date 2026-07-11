@@ -86,9 +86,12 @@ local signalOk, signalData = pcall(function()
     return game:HttpGet("https://raw.githubusercontent.com/dgwowxyz/lil-signalll/refs/heads/main/Signal.lua")
 end)
 if signalOk and signalData then
-    local ok, mod = pcall(loadstring, signalData)
-    if ok and mod then
-        library.signal = mod
+    local ok, chunk = pcall(loadstring, signalData)
+    if ok and chunk then
+        local ok2, mod = pcall(chunk)
+        if ok2 and mod then
+            library.signal = mod
+        end
     end
 end
 if not library.signal then
