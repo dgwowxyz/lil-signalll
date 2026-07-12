@@ -276,13 +276,31 @@ function library.new(library_title, cfg_location)
         Name = "Main",
         AnchorPoint = Vector2.new(0.5, 0.5),
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
-        BorderColor3 = Color3.fromRGB(78, 93, 234),
+        BorderSizePixel = 0,
         Position = UDim2.new(0.5, 0, 0.5, 0),
         Size = UDim2.new(0, 700, 0, 500),
         Image = "http://www.roblox.com/asset/?id=7300333488",
         AutoButtonColor = false,
         Modal = true,
     }, ScreenGui)
+
+    library:create("Frame", {
+        Name = "BlackOutline",
+        BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+        BorderSizePixel = 0,
+        Position = UDim2.new(0, -2, 0, -2),
+        Size = UDim2.new(1, 4, 1, 4),
+        ZIndex = 0,
+    }, ImageLabel)
+
+    library:create("Frame", {
+        Name = "AccentRing",
+        BackgroundColor3 = Color3.fromRGB(78, 93, 234),
+        BorderSizePixel = 0,
+        Position = UDim2.new(0, -1, 0, -1),
+        Size = UDim2.new(1, 2, 1, 2),
+        ZIndex = 0,
+    }, ImageLabel)
 
     function menu.GetPosition()
         return ImageLabel.Position
